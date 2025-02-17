@@ -1,11 +1,12 @@
 "use client"
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const ReservationContext = createContext();
 
 function ReservationProvider({ children }) {
   const [range, setRange] = useState({ from: null, to: null });
-  return <ReservationContext.Provider value={{ range, setRange }} >
+  const resetRange = () => setRange({ from: null, to: null });
+  return <ReservationContext.Provider value={{ range, setRange, resetRange }} >
     {children}
   </ReservationContext.Provider>
 }
