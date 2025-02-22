@@ -1,10 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { updateProfile } from '../_lib/action';
 
 function UpdateProfile({ children, guest }) {
-	// CHANGE
-	const [count, setCount] = useState();
 	const { fullName, email, nationality, nationalID, countryFlag } = guest;
 
 	return (
@@ -16,7 +14,7 @@ function UpdateProfile({ children, guest }) {
 				<label>Full name</label>
 				<input
 					name='fullName'
-					defaultValue={fullName}
+					defaultValue={fullName || ''}
 					disabled
 					className='px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400'
 				/>
@@ -26,7 +24,7 @@ function UpdateProfile({ children, guest }) {
 				<label>Email address</label>
 				<input
 					name='email'
-					defaultValue={email}
+					defaultValue={email || ''}
 					disabled
 					className='px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400'
 				/>
@@ -37,7 +35,7 @@ function UpdateProfile({ children, guest }) {
 					<label htmlFor='nationality'>Where are you from?</label>
 					<img
 						name='countryFlag'
-						src={countryFlag}
+						src={countryFlag || '/default-flag.png'}
 						alt='Country flag'
 						className='h-5 rounded-sm'
 					/>
@@ -50,17 +48,29 @@ function UpdateProfile({ children, guest }) {
 				<label htmlFor='nationalID'>National ID number</label>
 				<input
 					name='nationalID'
-					defaultValue={nationalID}
+					defaultValue={nationalID || ''}
 					className='px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm'
 				/>
 			</div>
 
 			<div className='flex justify-end items-center gap-6'>
-				<button className='bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300'>
-					Update profile
-				</button>
+				<Button />
 			</div>
 		</form>
+	);
+}
+
+function Button() {
+	const { pending } = useFormStatus();
+
+	return (
+		<button
+			type="submit"
+			disabled={pending}
+			className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300"
+		>
+			{pending ? "Updating..." : "Update Profile"}
+		</button>
 	);
 }
 
