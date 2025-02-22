@@ -1,6 +1,7 @@
 'use server';
 
 import { auth, signIn, signOut } from './auth';
+import { supabase } from './supabase';
 
 export async function updateProfile(formData) {
 	const session = await auth();
@@ -15,8 +16,16 @@ export async function updateProfile(formData) {
 			'National ID must be between 6 and 12 alphanumeric characters'
 		);
 	}
-	const updateData = { nationality, countryFlag, nationalID };
-	console.log(updateData);
+	const updatedData = { nationality, countryFlag, nationalID };
+	const { data, error } = await supabase
+		.from('guests')
+		.update(updatedData)
+		.eq('id', session.user.guestId);
+
+	if (error) {
+		console.error(error);
+		throw new Error('Guest could not be updated');
+	}
 }
 
 export async function signInAction() {
