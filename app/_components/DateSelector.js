@@ -21,6 +21,8 @@ function isAlreadyBooked(range, datesArr) {
 
 function DateSelector({ settings, bookedDates, cabin }) {
 	const { range, setRange, resetRange } = useReservation();
+	const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
+
 	// CHANGE
 
 	const { regularPrice, discount } = cabin;
@@ -35,7 +37,7 @@ function DateSelector({ settings, bookedDates, cabin }) {
 				className='pt-12 place-self-center ml-3'
 				mode='range'
 				onSelect={setRange}
-				selected={range}
+				selected={displayRange}
 				min={minBookingLength + 1}
 				max={maxBookingLength}
 				startMonth={new Date()}
